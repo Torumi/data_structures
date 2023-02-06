@@ -45,6 +45,11 @@ Contacts: {len(organization.get('contacts'))}
 {'_' * 20}
             ''')
 
+def get_organization(name):
+    for organization in organizations:
+        if organization.get('name') == name:
+            return organization
+
 
 def add_contact(organisation, name: str, position: str, id: int):
     organisation.get('contacts').append({
@@ -56,12 +61,14 @@ def add_contact(organisation, name: str, position: str, id: int):
 
 
 while True:
-    print_info(organizations[0])
     response = input('Add contact? (Y/N)')
     if response == 'Y':
+        organization_name = input('Organization: ')
+        organization = get_organization(organization_name)
         name = input('Name: ')
         position = input('Position: ')
         id = int(input('ID: '))
-        add_contact(organizations[0], name, position, id)
+        add_contact(organization, name, position, id)
+        print_info(organization)
     else:
         break
