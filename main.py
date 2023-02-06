@@ -39,11 +39,11 @@ organizations = [
 def print_info(organization):
     print(f'''
 Organization:
-{organization.get('name')} ({organization.get('id')})
-Adress: {organization.get('adress')},
-Contacts:''')
+    {organization.get('name')} ({organization.get('id')})
+    Adress: {organization.get('adress')},
+    Contacts:''')
     for contact in organization.get('contacts'):
-        print(f"    {contact.get('name')} ({contact.get('position')}) ID: {contact.get('id')}")
+        print(f"        {contact.get('name')} ({contact.get('position')}) ID: {contact.get('id')}")
     print('_'*50)
 
 def get_organization(name):
