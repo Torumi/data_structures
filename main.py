@@ -1,11 +1,31 @@
 import sys
 import json
 
+'''Load organizations'''
 with (open('organizations.json', 'r')) as openfile:
     organizations = json.load(openfile)
 
 
+def select_organization():
+    """Selects organizations"""
+    if len(organizations) != 0:
+        for i in range(len(organizations)):
+            print(f"{i} - {organizations[i].get('name')}")
+        while True:
+            selected_organization_num = int(input("Enter number of organization: "))
+            try:
+                global selected_organization
+                selected_organization = organizations[selected_organization_num]
+            except IndexError:
+                print("Invalid number")
+            else:
+                break
+    else:
+        print('There are no organizations yet')
+
+
 def print_info():
+    """Prints info about selected organization"""
     print(f'''
 Organization:
     {selected_organization.get('name')} ({selected_organization.get('id')})
@@ -17,77 +37,19 @@ Organization:
 
 
 def add_contact():
+    """Adds a contact to selected organization"""
     name = input('Name: ')
     position = input('Position: ')
-    id = int(input('ID: '))
+    contact_id = int(input('ID: '))
     selected_organization.get('contacts').append({
         'name': name,
         'position': position,
-        'id': id
+        'id': contact_id
     })
 
 
-def add_organization():
-    name = input('Name: ')
-    address = input('Adress: ')
-    id = input('ID: ')
-    org = {
-        'name': name,
-        'adress': address,
-        'id': id,
-        'contacts': []
-    }
-    organizations.append(org)
-
-
-def select_organization():
-    if len(organizations) != 0:
-        for i in range(len(organizations)):
-            print(f"{i} - {organizations[i].get('name')}")
-        while True:
-            selected_organization_num = int(input("Enter number of organization: "))
-            try:
-                global selected_organization
-                selected_organization = organizations[selected_organization_num]
-            except:
-                print("Invalid number")
-            else:
-                break
-    else:
-        print('There are no organizations yet')
-
-
-def stop_running():
-    sys.exit()
-
-
-def reset_select():
-    global selected_organization
-    selected_organization = None
-
-
-def delete_organization():
-    if len(organizations) != 0:
-        for i in range(len(organizations)):
-            print(f"{i} - {organizations[i].get('name')}")
-        while True:
-            organization_to_del_num = int(input("Enter number of organization to delete: "))
-            confirm = input('Are you sure?[Y/N upper case] ')
-            if confirm == 'Y':
-                try:
-                    deleted_organization = organizations.pop(organization_to_del_num)
-                except:
-                    print("Invalid number")
-                else:
-                    print(f"{deleted_organization.get('name')} HAS BEEN DELETED")
-                    break
-            else:
-                break
-    else:
-        print('There are no organizations yet')
-
-
 def delete_contact():
+    """Deletes a contact of selected organization"""
     contacts = selected_organization.get('contacts')
     if len(contacts) != 0:
         for i in range(len(contacts)):
@@ -98,7 +60,7 @@ def delete_contact():
             if confirm == 'Y':
                 try:
                     deleted_contact = selected_organization.get('contacts').pop(contact_to_del_num)
-                except:
+                except IndexError:
                     print("Invalid number")
                 else:
                     print(
@@ -108,6 +70,48 @@ def delete_contact():
                 break
     else:
         print('There are no contacts yet')
+
+
+def reset_select():
+    """Resets selection of organization"""
+    global selected_organization
+    selected_organization = None
+
+
+def add_organization():
+    """Adds organization to list"""
+    name = input('Name: ')
+    address = input('Adress: ')
+    organization_id = input('ID: ')
+    org = {
+        'name': name,
+        'adress': address,
+        'id': organization_id,
+        'contacts': []
+    }
+    organizations.append(org)
+
+
+def delete_organization():
+    """Delete organization from list"""
+    if len(organizations) != 0:
+        for i in range(len(organizations)):
+            print(f"{i} - {organizations[i].get('name')}")
+        while True:
+            organization_to_del_num = int(input("Enter number of organization to delete: "))
+            confirm = input('Are you sure?[Y/N upper case] ')
+            if confirm == 'Y':
+                try:
+                    deleted_organization = organizations.pop(organization_to_del_num)
+                except IndexError:
+                    print("Invalid number")
+                else:
+                    print(f"{deleted_organization.get('name')} HAS BEEN DELETED")
+                    break
+            else:
+                break
+    else:
+        print('There are no organizations yet')
 
 
 def main():
@@ -125,12 +129,12 @@ def main():
 
         else:
             response = input('Add organization - 1\n'
-                             'Select organizatoin - 2\n'
-                             'Delete organiztion - D\n'
+                             'Select organization - 2\n'
+                             'Delete organization - D\n'
                              'Exit - E\n').lower()
             activities = {'1': add_organization,
                           '2': select_organization,
-                          'e': stop_running,
+                          'e': lambda: sys.exit(),
                           'd': delete_organization}
 
         activities.get(response, lambda: print('Invalid response'))()
