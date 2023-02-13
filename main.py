@@ -1,3 +1,6 @@
+import sys
+import json
+
 organizations = [
     {
         'name': 'Tesla Motors',
@@ -36,7 +39,9 @@ organizations = [
 ]
 
 
-def print_info(organization):
+
+def print_info():
+    organization = get_organization(selected_organization)
     print(f'''
 Organization:
     {organization.get('name')} ({organization.get('id')})
@@ -52,24 +57,72 @@ def get_organization(name):
             return organization
 
 
-def add_contact(organisation, name: str, position: str, id: int):
-    organisation.get('contacts').append({
+def add_contact():
+    organization = get_organization(selected_organization)
+    name = input('Name: ')
+    position = input('Position: ')
+    id = int(input('ID: '))
+    organization.get('contacts').append({
         'name': name,
         'position': position,
         'id': id
     })
 
+def add_organization():
+    name = input('Name: ')
+    address = input('Adress: ')
+    id = input('ID: ')
+    org = {
+        'name': name,
+        'adress': address,
+        'id': id,
+        'contacts': {}
+    }
+    organizations.append(org)
+
+def select_organization():
+    for i in range(len(organizations)):
+        print(f"{i} - {organizations[i].get('name')}")
+    while True:
+        global selected_organization
+        selected_organization_num = int(input("Enter number of organization: "))
+        try:
+            selected_organization = organizations[selected_organization_num].get('name')
+        except:
+            print("Invalid number")
+        else:
+            break
+
+def stop_running():
+    sys.exit()
+
+def reset_select():
+    global selected_organization
+    selected_organization = None
 
 
-while True:
-    response = input('Add contact? (Y/N)')
-    if response == 'Y':
-        organization_name = input('Organization: ')
-        organization = get_organization(organization_name)
-        name = input('Name: ')
-        position = input('Position: ')
-        id = int(input('ID: '))
-        add_contact(organization, name, position, id)
-        print_info(organization)
-    else:
-        break
+def main():
+    selected_organization = None
+    while True:
+        if selected_organization:
+            print(f'Selected: {selected_organization}')
+            response = input('Add contact - 1\n'
+                             'Organization info - 2\n'
+                             'Back - B\n')
+            activities = {'1': add_contact,
+                          '2': print_info,
+                          'B': reset_select}
+
+        else:
+            response = input('Add organization - 1\n'
+                             'Select organizatoin - 2\n'
+                             'Exit - E\n')
+            activities = {'1':add_organization,
+                          '2':select_organization,
+                          'E':stop_running}
+
+        activities.get(response, lambda : print('Invalid response'))()
+        print()
+
+if __name__ == '__main__':
+    main()
