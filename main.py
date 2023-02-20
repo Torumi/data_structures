@@ -124,6 +124,13 @@ def print_income_top():
     for index, company in enumerate(sorted_orgs[:5]):
         print(f"{index+1} - {company.get('name')} ({company.get('income')}$)")
 
+def get_organization_by_id():
+    ID = input("ID: ")
+    for organization in organizations:
+        if organization.get('id') == ID:
+            global selected_organization
+            selected_organization = organization
+
 def main():
     while True:
         if selected_organization:
@@ -144,12 +151,14 @@ def main():
                              'Select organization - 2\n'
                              'Delete organization - D\n'
                              'Exit - E\n'
-                             'Get top 5 income companies - I\n').lower()
+                             'Get top 5 income companies - I\n'
+                             'Find organization by ID - F\n').lower()
             activities = {'1': add_organization,
                           '2': select_organization,
                           'e': lambda: sys.exit(),
                           'd': delete_organization,
-                          'i': print_income_top}
+                          'i': print_income_top,
+                          'f': get_organization_by_id}
 
         activities.get(response, lambda: print('Invalid response'))()
 
