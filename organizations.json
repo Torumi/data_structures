@@ -9,7 +9,8 @@
                 "position": "CEO",
                 "id": 1
             }
-        ]
+        ],
+        "income": 1500
     },
     {
         "name": "Apple",
@@ -21,7 +22,8 @@
                 "position": "CEO",
                 "id": 1
             }
-        ]
+        ],
+        "income": 1000
     },
     {
         "name": "LatvEnergo",
@@ -33,6 +35,28 @@
                 "position": "Programmer",
                 "id": 14
             }
-        ]
+        ],
+        "income": 500
+    },
+    {
+        "name": "ORG 1",
+        "adress": "ORG 1 ADRR",
+        "id": "150915",
+        "contacts": [],
+        "income": 750
+    },
+    {
+        "name": "ORG 2",
+        "adress": "ORG 2 ADDR",
+        "id": "1249105",
+        "contacts": [],
+        "income": 900
+    },
+    {
+        "name": "ORG 3",
+        "adress": "ORG 3 ADDR",
+        "id": "12490124",
+        "contacts": [],
+        "income": 250
     }
 ]

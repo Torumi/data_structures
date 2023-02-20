@@ -30,6 +30,7 @@ def print_info():
 Organization:
     {selected_organization.get('name')} ({selected_organization.get('id')})
     Adress: {selected_organization.get('adress')},
+    Income: {selected_organization.get('income')}$
     Contacts:''')
     for contact in selected_organization.get('contacts'):
         print(f"        {contact.get('name')} ({contact.get('position')}) ID: {contact.get('id')}")
@@ -87,7 +88,8 @@ def add_organization():
         'name': name,
         'adress': address,
         'id': organization_id,
-        'contacts': []
+        'contacts': [],
+        'income': 0
     }
     organizations.append(org)
 
@@ -113,6 +115,14 @@ def delete_organization():
     else:
         print('There are no organizations yet')
 
+def add_income():
+    income = int(input("Income: "))
+    selected_organization["income"] = income
+
+def print_income_top():
+    sorted_orgs = list(reversed(sorted(organizations, key=lambda d: d['income'])))
+    for index, company in enumerate(sorted_orgs[:5]):
+        print(f"{index+1} - {company.get('name')} ({company.get('income')}$)")
 
 def main():
     while True:
@@ -121,21 +131,25 @@ def main():
             response = input('Add contact - 1\n'
                              'Delete contact - D\n'
                              'Organization info - 2\n'
-                             'Back - B\n').lower()
+                             'Back - B\n'
+                             'Add income - I\n').lower()
             activities = {'1': add_contact,
                           '2': print_info,
                           'b': reset_select,
-                          'd': delete_contact}
+                          'd': delete_contact,
+                          'i': add_income}
 
         else:
             response = input('Add organization - 1\n'
                              'Select organization - 2\n'
                              'Delete organization - D\n'
-                             'Exit - E\n').lower()
+                             'Exit - E\n'
+                             'Get top 5 income companies - I\n').lower()
             activities = {'1': add_organization,
                           '2': select_organization,
                           'e': lambda: sys.exit(),
-                          'd': delete_organization}
+                          'd': delete_organization,
+                          'i': print_income_top}
 
         activities.get(response, lambda: print('Invalid response'))()
 
