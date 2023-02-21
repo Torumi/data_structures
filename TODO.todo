@@ -1,1 +1,6 @@
 - [x] TODO Write function to get org by ID
+- [] FIXME Rewrite get_organization_by_id function (improve speed)
+- [] TODO Comment code
+- [] TODO Write README
+- [] TODO Add more organizations (~500)
+- [] TODO Update selection UI (print in two columns, add pages)
