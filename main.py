@@ -77,7 +77,7 @@ def delete_contact():
         print('There are no contacts yet')
 
 
-def reset_select():
+def reset_selection():
     """Resets selection of organization"""
     global selected_organization
     selected_organization = None
@@ -119,7 +119,7 @@ def delete_organization():
         print('There are no organizations yet')
 
 
-def add_income():
+def edit_income():
     income = int(input("Income: "))
     selected_organization["income"] = income
 
@@ -148,30 +148,30 @@ def main():
     while True:
         if selected_organization:
             print(f'Selected: {selected_organization.get("name")}')
-            response = input('Add contact - 1\n'
+            response = input('Add contact - A\n'
                              'Delete contact - D\n'
-                             'Organization info - 2\n'
-                             'Back - B\n'
-                             'Add income - I\n').lower()
-            activities = {'1': add_contact,
-                          '2': print_info,
-                          'b': reset_select,
+                             'Organization info - I\n'
+                             'Edit income - E\n'
+                             'Back - B\n').lower()
+            activities = {'a': add_contact,
                           'd': delete_contact,
-                          'i': add_income}
+                          'i': print_info,
+                          'e': edit_income,
+                          'b': reset_selection}
 
         else:
-            response = input('Add organization - 1\n'
-                             'Select organization - 2\n'
+            response = input('Add organization - A\n'
                              'Delete organization - D\n'
-                             'Exit - E\n'
-                             'Get top 5 income companies - I\n'
-                             'Find organization by ID - F\n').lower()
-            activities = {'1': add_organization,
-                          '2': select_organization,
-                          'e': lambda: sys.exit(),
+                             'Select organization - S\n'
+                             'Get TOP 5 income companies - T\n'
+                             'Find organization by ID - F\n'
+                             'Exit - E\n').lower()
+            activities = {'a': add_organization,
                           'd': delete_organization,
-                          'i': print_income_top,
-                          'f': get_organization_by_id}
+                          's': select_organization,
+                          't': print_income_top,
+                          'f': get_organization_by_id,
+                          'e': lambda: sys.exit()}
 
         activities.get(response, lambda: print('Invalid response'))()
 
